@@ -7,9 +7,9 @@ modules with VIM a lot easier.
 What does it do?
 ----------------
 
-1) Set make paths -- If you call :make, it does the right thing.
-2) Set search paths. You can now use 'gf' on all the includes.
-3) Configure Syntastic. If you're using Syntastic (that's a static syntax
+1. Set make paths -- If you call :make, it does the right thing.
+2. Set search paths. You can now use 'gf' on all the includes.
+3. Configure Syntastic. If you're using Syntastic (that's a static syntax
    checker, FYI), it makes sure that knows where includes are etc.
 
 
