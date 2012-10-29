@@ -21,9 +21,9 @@ the bundle/ dir of your vim settings.
 
 Something like this:
 
-$ cd .vim
-$ git submodule add git@github.com:mbant/grproject.vim.git bundle/grproject
-$ git submodule init
+    $ cd .vim
+    $ git submodule add git@github.com:mbant/grproject.vim.git bundle/grproject
+    $ git submodule init
 
 That's it.
 
