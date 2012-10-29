@@ -63,8 +63,11 @@ def setup_buffer(mod_info):
         pass
 
 try:
-	mod_info = eval(os.popen('gr_modtool.py info --python-readable').read().strip())
-	setup_buffer(mod_info)
+    pipe = os.popen('gr_modtool.py info --python-readable')
+    mod_info_str = pipe.read().strip()
+    if pipe.close() is None:
+        mod_info = eval(mod_info_str)
+        setup_buffer(mod_info)
 except OSError:
     pass
 
