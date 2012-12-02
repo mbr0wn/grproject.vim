@@ -1,4 +1,4 @@
-"
+" vim: set list:
 " Plugin: grproject
 "
 " Version: 0.1-alpha-hack
@@ -61,6 +61,11 @@ def setup_buffer(mod_info):
         vim.command("let &l:path = &g:path . '%s'" % paths)
     except KeyError:
         pass
+    if 'is_component' in mod_info.keys():
+        vim.command("setlocal noexpandtab")
+        vim.command("setlocal softtabstop=2")
+        vim.command("setlocal shiftwidth=2")
+        vim.command("setlocal tabstop=8")
 
 try:
     pipe = os.popen('gr_modtool.py info --python-readable')
