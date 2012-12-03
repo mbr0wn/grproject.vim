@@ -24,13 +24,13 @@ autocmd grproject BufNewFile,BufReadPost *.cc,*.h,*.py,CMakeLists.txt call GRChe
 
 " Check if this file is part of a GNU Radio project
 func! GRCheckForProject()
-	if exists('b:grproject_check')
-		" Then this was already called
-		return
-	else
-		call GRSetupProject()
-		let b:grproject_check = 1
-	endif
+    if exists('b:grproject_check')
+        " Then this was already called
+        return
+    else
+        call GRSetupProject()
+        let b:grproject_check = 1
+    endif
 endfunc
 
 
