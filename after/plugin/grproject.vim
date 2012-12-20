@@ -61,7 +61,8 @@ def setup_buffer(mod_info):
         vim.command("let &l:path = &g:path . '%s'" % paths)
     except KeyError:
         pass
-    if 'is_component' in mod_info.keys():
+    filetype = vim.eval("&l:ft")
+    if 'is_component' in mod_info.keys() and filetype in ('cpp', 'c'):
         vim.command("setlocal noexpandtab")
         vim.command("setlocal softtabstop=2")
         vim.command("setlocal shiftwidth=2")
