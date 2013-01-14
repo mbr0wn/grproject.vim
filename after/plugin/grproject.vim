@@ -19,13 +19,22 @@ endif
 " end up with multiple autocmd entries if this file is sourced more than once.
 augroup grproject
 autocmd! grproject
-autocmd grproject BufNewFile,BufReadPost *.cc,*.h,*.py,CMakeLists.txt call GRCheckForProject()
+autocmd grproject BufEnter *.cc,*.h,*.py,CMakeLists.txt call GRCheckForProject()
 "autocmd grproject BufEnter *.cc,*.h,*.py,CMakeLists.txt call GRCheckForProject()
 
 " Check if this file is part of a GNU Radio project
 func! GRCheckForProject()
+    echo 'yo'
     if exists('b:grproject_check')
         " Then this was already called
+        if b:grproject_iscomponent==1
+            if (&l:ft == 'cpp' || &l:ft == 'c')
+                setlocal noexpandtab
+                setlocal softtabstop=2"
+                setlocal shiftwidth=2"
+                setlocal tabstop=8"
+            endif
+        endif
         return
     else
         call GRSetupProject()
@@ -62,11 +71,14 @@ def setup_buffer(mod_info):
     except KeyError:
         pass
     filetype = vim.eval("&l:ft")
-    if 'is_component' in mod_info.keys() and filetype in ('cpp', 'c'):
+    if 'is_component' in mod_info.keys():
+        vim.command("let b:grproject_iscomponent = 1")
         vim.command("setlocal noexpandtab")
         vim.command("setlocal softtabstop=2")
         vim.command("setlocal shiftwidth=2")
         vim.command("setlocal tabstop=8")
+    else: 
+        vim.command("let b:grproject_iscomponent = 0")
 
 try:
     pipe = os.popen('gr_modtool.py info --python-readable')
