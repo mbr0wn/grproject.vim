@@ -24,7 +24,6 @@ autocmd grproject BufEnter *.cc,*.h,*.py,CMakeLists.txt call GRCheckForProject()
 
 " Check if this file is part of a GNU Radio project
 func! GRCheckForProject()
-    echo 'yo'
     if exists('b:grproject_check')
         " Then this was already called
         if b:grproject_iscomponent==1
