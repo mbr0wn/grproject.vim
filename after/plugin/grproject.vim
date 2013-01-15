@@ -26,7 +26,7 @@ autocmd grproject BufEnter *.cc,*.h,*.py,CMakeLists.txt call GRCheckForProject()
 func! GRCheckForProject()
     if exists('b:grproject_check')
         " Then this was already called
-        if b:grproject_iscomponent==1
+        if exists('b:grproject_name') && b:grproject_iscomponent==1
             if (&l:ft == 'cpp' || &l:ft == 'c')
                 setlocal noexpandtab
                 setlocal softtabstop=2"
