@@ -50,6 +50,7 @@ func! GRSetupProject()
 python << EOP
 import vim
 import os
+import subprocess
 
 def setup_buffer(mod_info):
     if not 'modname' in mod_info.keys():
@@ -76,16 +77,15 @@ def setup_buffer(mod_info):
         vim.command("setlocal softtabstop=2")
         vim.command("setlocal shiftwidth=2")
         vim.command("setlocal tabstop=8")
-    else: 
+    else:
         vim.command("let b:grproject_iscomponent = 0")
 
 try:
-    pipe = os.popen('gr_modtool.py info --python-readable')
-    mod_info_str = pipe.read().strip()
-    if pipe.close() is None:
-        mod_info = eval(mod_info_str)
-        setup_buffer(mod_info)
-except OSError:
+    output = subprocess.check_output(['gr_modtool info --python-readable'],
+                                     shell=True, stderr=subprocess.STDOUT)
+    mod_info = eval(output.strip())
+    setup_buffer(mod_info)
+except subprocess.CalledProcessError:
     pass
 
 EOP
