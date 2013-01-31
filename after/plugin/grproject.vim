@@ -71,7 +71,7 @@ def setup_buffer(mod_info):
     except KeyError:
         pass
     filetype = vim.eval("&l:ft")
-    if 'is_component' in mod_info.keys():
+    if 'is_component' in mod_info.keys() and filetype in ('cpp', 'c'):
         vim.command("let b:grproject_iscomponent = 1")
         vim.command("setlocal noexpandtab")
         vim.command("setlocal softtabstop=2")
