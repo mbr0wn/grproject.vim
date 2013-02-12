@@ -1,4 +1,4 @@
-" vim: set list:
+" vim:list:listchars=tab\:>-:
 " Plugin: grproject
 "
 " Version: 0.1-alpha-hack
@@ -71,14 +71,15 @@ def setup_buffer(mod_info):
     except KeyError:
         pass
     filetype = vim.eval("&l:ft")
-    if 'is_component' in mod_info.keys() and filetype in ('cpp', 'c'):
-        vim.command("let b:grproject_iscomponent = 1")
-        vim.command("setlocal noexpandtab")
-        vim.command("setlocal softtabstop=2")
-        vim.command("setlocal shiftwidth=2")
-        vim.command("setlocal tabstop=8")
+    if 'is_component' in mod_info.keys():
+        vim.command("let b:grproject_iscomponent=1")
+        if filetype in ('cpp', 'c'):
+            vim.command("setlocal noexpandtab")
+            vim.command("setlocal softtabstop=2")
+            vim.command("setlocal shiftwidth=2")
+            vim.command("setlocal tabstop=8")
     else:
-        vim.command("let b:grproject_iscomponent = 0")
+        vim.command("let b:grproject_iscomponent=0")
 
 try:
     output = subprocess.check_output(['gr_modtool info --python-readable'],
