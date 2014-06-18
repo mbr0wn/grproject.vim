@@ -28,7 +28,6 @@ func! GRCheckForProject()
         " Then this was already called
         if exists('b:grproject_name') && b:grproject_iscomponent==1
             if (&l:ft == 'cpp' || &l:ft == 'c')
-                setlocal noexpandtab
                 setlocal softtabstop=2"
                 setlocal shiftwidth=2"
                 setlocal tabstop=8"
@@ -49,7 +48,6 @@ func! GRSetupProject()
 " * make command
 python << EOP
 import vim
-import os
 import subprocess
 
 def setup_buffer(mod_info):
