@@ -1,4 +1,4 @@
-" vim:list:listchars=tab\:>-:
+" vim:list:listchars=tab\:>-:et:sw=4:
 " Plugin: grproject
 "
 " Version: 0.1-alpha-hack
@@ -20,7 +20,6 @@ endif
 augroup grproject
 autocmd! grproject
 autocmd grproject BufEnter *.cc,*.h,*.py,CMakeLists.txt call GRCheckForProject()
-"autocmd grproject BufEnter *.cc,*.h,*.py,CMakeLists.txt call GRCheckForProject()
 
 " Check if this file is part of a GNU Radio project
 func! GRCheckForProject()
@@ -40,53 +39,19 @@ func! GRCheckForProject()
     endif
 endfunc
 
-
 func! GRSetupProject()
 " Calls 'gr_modtool info' and sets up:
 " * include dirs (for syntastic)
 " * search paths
 " * make command
-python << EOP
-import vim
-import subprocess
+    python sys.argv = ["setup_project",]
+    pyfile ~/.vim/bundle/grproject/after/plugin/grproject.py
+    nnoremap <buffer> <F5> :w<CR>:call GRRunThisBuffer()<CR>
+    inoremap <buffer> <F5> <ESC>:w<CR>:call GRRunThisBuffer()<CR>
+endfunc
 
-def setup_buffer(mod_info):
-    if not 'modname' in mod_info.keys():
-        return
-    vim.command("let b:grproject_name = '%s'" % mod_info['modname'])
-    try:
-        include_cpp_flags = ' '.join(['-I%s' % x for x in mod_info['incdirs']])
-        vim.command("let b:syntastic_cpp_cflags = '%s'" % include_cpp_flags)
-    except KeyError:
-        pass
-    try:
-        vim.command("let &l:makeprg = 'cd %s; make'" % mod_info['build_dir'])
-    except KeyError:
-        pass
-    try:
-        paths = ','.join([x.replace(' ', r'\\\ ') for x in mod_info['incdirs']])
-        vim.command("let &l:path = &g:path . '%s'" % paths)
-    except KeyError:
-        pass
-    filetype = vim.eval("&l:ft")
-    if 'is_component' in mod_info.keys():
-        vim.command("let b:grproject_iscomponent=1")
-        if filetype in ('cpp', 'c'):
-            vim.command("setlocal noexpandtab")
-            vim.command("setlocal softtabstop=2")
-            vim.command("setlocal shiftwidth=2")
-            vim.command("setlocal tabstop=8")
-    else:
-        vim.command("let b:grproject_iscomponent=0")
-
-try:
-    output = subprocess.check_output(['gr_modtool info --python-readable'],
-                                     shell=True, stderr=subprocess.STDOUT)
-    mod_info = eval(output.strip())
-    setup_buffer(mod_info)
-except subprocess.CalledProcessError:
-    pass
-
-EOP
+func! GRRunThisBuffer()
+    python sys.argv = ["run_buffer",]
+    pyfile ~/.vim/bundle/grproject/after/plugin/grproject.py
 endfunc
 
