@@ -46,8 +46,10 @@ func! GRSetupProject()
 " * make command
     python sys.argv = ["setup_project",]
     pyfile ~/.vim/bundle/grproject/after/plugin/grproject.py
-    nnoremap <buffer> <F5> :w<CR>:call GRRunThisBuffer()<CR>
-    inoremap <buffer> <F5> <ESC>:w<CR>:call GRRunThisBuffer()<CR>
+    if exists('b:grproject_name')
+        nnoremap <buffer> <F5> :w<CR>:call GRRunThisBuffer()<CR>
+        inoremap <buffer> <F5> <ESC>:w<CR>:call GRRunThisBuffer()<CR>
+    endif
 endfunc
 
 func! GRRunThisBuffer()

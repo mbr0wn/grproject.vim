@@ -100,7 +100,7 @@ def run_buffer():
     if ext == '.py':
         test_cmd = get_test_cmd_for_py(filename)
     elif ext in ('.cc', '.h'):
-        test_cmd = get_test_cmd_for_cpp(filename)
+        test_cmd = get_test_cmd_for_cpp(filename, is_component)
     elif ext == '.txt' and filename == 'CMakeLists':
         test_cmd = get_test_cmd_for_cmake(build_dir)
     if test_cmd is not None:
