@@ -68,6 +68,7 @@ def run_buffer():
     def get_test_cmd_for_py(filename, build_dir, is_component):
         # If it's a QA file, we can directly infer the corresponding
         # test shell file:
+        full_filename = vim.eval("expand('%')")
         if not re.match('^qa_', filename) \
            and re.search("if\s*__name__\s*==\s*.__main__.:", open(full_filename).read()):
             return 'python {}'.format(full_filename)
@@ -79,8 +80,7 @@ def run_buffer():
             test_cmd = os.path.join(build_dir, 'gr-'+modname, 'python', modname, test_cmd)
         else:
             test_cmd = os.path.join(build_dir, 'python', test_cmd)
-        full_filename == vim.eval("expand('%')")
-        return 'qa_{}_test.sh'.format(filename)
+        return test_cmd
     def get_test_cmd_for_cpp(filename, is_component):
         if re.match('^qa_', filename):
             return None
@@ -98,11 +98,12 @@ def run_buffer():
     modname = vim.eval('b:grproject_name')
     # Identify the test executable:
     if ext == '.py':
-        test_cmd = get_test_cmd_for_py(filename)
+        test_cmd = get_test_cmd_for_py(filename, build_dir, is_component)
     elif ext in ('.cc', '.h'):
         test_cmd = get_test_cmd_for_cpp(filename, is_component)
     elif ext == '.txt' and filename == 'CMakeLists':
         test_cmd = get_test_cmd_for_cmake(build_dir)
+    print test_cmd
     if test_cmd is not None:
         if is_component:
             test_cmd = os.path.join(build_dir, 'gr-'+modname, 'python', modname, test_cmd)
