@@ -44,8 +44,13 @@ func! GRSetupProject()
 " * include dirs (for syntastic)
 " * search paths
 " * make command
-    python sys.argv = ["setup_project",]
-    pyfile ~/.vim/bundle/grproject/after/plugin/grproject.py
+    if has('python3')
+        python3 sys.argv = ["setup_project",]
+        py3file ~/.vim/bundle/grproject/after/plugin/grproject.py
+    elseif has('python')
+        python sys.argv = ["setup_project",]
+        pyfile ~/.vim/bundle/grproject/after/plugin/grproject.py
+    endif
     if exists('b:grproject_name')
         nnoremap <buffer> <F5> :w<CR>:call GRRunThisBuffer()<CR>
         inoremap <buffer> <F5> <ESC>:w<CR>:call GRRunThisBuffer()<CR>
@@ -53,7 +58,12 @@ func! GRSetupProject()
 endfunc
 
 func! GRRunThisBuffer()
-    python sys.argv = ["run_buffer",]
-    pyfile ~/.vim/bundle/grproject/after/plugin/grproject.py
+    if has('python3')
+        python3 sys.argv = ["run_buffer",]
+        py3file ~/.vim/bundle/grproject/after/plugin/grproject.py
+    elseif has('python')
+        python sys.argv = ["run_buffer",]
+        pyfile ~/.vim/bundle/grproject/after/plugin/grproject.py
+    endif
 endfunc
 

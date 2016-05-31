@@ -1,30 +1,31 @@
 """ Utility functions for grproject.vim, a tool to facilitate working
     with GNU Radio out-of-tree modules. """
 
+from __future__ import print_function
 import re
 import sys
 import os
-import vim
 import subprocess
+import vim
 
 def setup_buffer(mod_info):
     """ Set up all local variables for a buffer. """
-    if not 'modname' in mod_info.keys():
+    if 'modname' not in mod_info:
         return
-    vim.command("let b:grproject_name = '%s'" % mod_info['modname'])
+    vim.command("let b:grproject_name = '{0}'".format(mod_info['modname']))
     try:
-        include_cpp_flags = ' '.join(['-I%s' % x for x in mod_info['incdirs']])
-        vim.command("let b:syntastic_cpp_cflags = '%s'" % include_cpp_flags)
+        include_cpp_flags = ' '.join(['-I{0}'.format(x) for x in mod_info['incdirs']])
+        vim.command("let b:syntastic_cpp_cflags = '{0}'".format(include_cpp_flags))
     except KeyError:
         pass
     try:
-        vim.command("let b:grproject_builddir = '{}'".format(mod_info['build_dir']))
-        vim.command("let &l:makeprg = 'make --directory={}'".format(mod_info['build_dir']))
+        vim.command("let b:grproject_builddir = '{0}'".format(mod_info['build_dir']))
+        vim.command("let &l:makeprg = 'make --directory={0}'".format(mod_info['build_dir']))
     except KeyError:
         pass
     try:
         paths = ','.join([x.replace(' ', r'\\\ ') for x in mod_info['incdirs']])
-        vim.command("let &l:path = &g:path . '%s'" % paths)
+        vim.command("let &l:path = &g:path . '{0}'".format(paths))
     except KeyError:
         pass
     filetype = vim.eval("&l:ft")
@@ -75,7 +76,7 @@ def run_buffer():
         if re.match('^qa_', filename):
             test_cmd = filename + '_test.sh'
         else:
-            test_cmd = 'qa_{}_test.sh'.format(filename)
+            test_cmd = 'qa_{0}_test.sh'.format(filename)
         if is_component:
             test_cmd = os.path.join(build_dir, 'gr-'+modname, 'python', modname, test_cmd)
         else:
@@ -85,9 +86,9 @@ def run_buffer():
         if re.match('^qa_', filename):
             return None
         filename = filename.replace('_impl', '')
-        return 'qa_{}_test.sh'.format(filename)
+        return 'qa_{0}_test.sh'.format(filename)
     def get_test_cmd_for_cmake(filename):
-        return 'cmake {}'.format(os.path.join(build_dir, '..'))
+        return 'cmake {0}'.format(os.path.join(build_dir, '..'))
 
 
     # Go, go, go:
@@ -103,14 +104,13 @@ def run_buffer():
         test_cmd = get_test_cmd_for_cpp(filename, is_component)
     elif ext == '.txt' and filename == 'CMakeLists':
         test_cmd = get_test_cmd_for_cmake(build_dir)
-    print test_cmd
     if test_cmd is not None:
         if is_component:
             test_cmd = os.path.join(build_dir, 'gr-'+modname, 'python', modname, test_cmd)
         else:
             test_cmd = os.path.join(build_dir, 'python', test_cmd)
         if os.path.isfile(test_cmd):
-            vim.command('!{}'.format(test_cmd))
+            vim.command('!{0}'.format(test_cmd))
 
 
 if __name__ == "__main__":
@@ -122,4 +122,4 @@ if __name__ == "__main__":
     if cmd in func_dispatcher.keys():
         func_dispatcher[cmd]()
     else:
-        print "grproject: Unkown command."
+        print("grproject: Unknown command.")
