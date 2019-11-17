@@ -46,10 +46,10 @@ func! GRSetupProject()
 " * make command
     if has('python3')
         python3 sys.argv = ["setup_project",]
-        py3file ~/.vim/bundle/grproject/after/plugin/grproject.py
+        py3file ~/.vim/pack/mbr0wn/start/grproject/after/plugin/grproject.py
     elseif has('python')
         python sys.argv = ["setup_project",]
-        pyfile ~/.vim/bundle/grproject/after/plugin/grproject.py
+        pyfile ~/.vim/pack/mbr0wn/start/grproject/after/plugin/grproject.py
     endif
     if exists('b:grproject_name')
         nnoremap <buffer> <F5> :w<CR>:call GRRunThisBuffer()<CR>
@@ -60,10 +60,10 @@ endfunc
 func! GRRunThisBuffer()
     if has('python3')
         python3 sys.argv = ["run_buffer",]
-        py3file ~/.vim/bundle/grproject/after/plugin/grproject.py
+        py3file ~/.vim/pack/mbr0wn/start/grproject/after/plugin/grproject.py
     elseif has('python')
         python sys.argv = ["run_buffer",]
-        pyfile ~/.vim/bundle/grproject/after/plugin/grproject.py
+        pyfile ~/.vim/pack/mbr0wn/start/grproject/after/plugin/grproject.py
     endif
 endfunc
 
